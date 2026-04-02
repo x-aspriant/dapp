@@ -216,12 +216,11 @@
     inset 0 0 20px rgba(0,255,136,0.06);
 }
 
-.status-icon.failed {
-  border-color: rgba(255,34,68,0.4);
-  box-shadow:
-    0 0 0 4px rgba(255,34,68,0.06),
-    0 0 28px rgba(255,34,68,0.4),
-    inset 0 0 20px rgba(255,34,68,0.06);
+/* FIXED */
+.status-icon {
+    box-shadow:
+        0 0 0 1px rgba(26, 173, 60, 0.08),
+        0 0 10px rgba(26, 173, 60, 0.4);
 }
 
 .receipt-status h3 {
