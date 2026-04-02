@@ -1,0 +1,953 @@
+/* Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-green: #1aad3c;
+    --dark-green: #0d8c2e;
+    --light-green: #27c24c;
+    --neon-glow: rgba(26, 173, 60, 0.7);
+    --neon-spread: rgba(26, 173, 60, 0.3);
+    --dark-bg: #f5f5f0;
+    --card-bg: #fafaf6;
+    --card-bg2: #f0f0eb;
+    --border-color: #deded8;
+    --border-green: rgba(26, 173, 60, 0.25);
+    --text-primary: #1a1a1a;
+    --text-secondary: #666666;
+    --success: #1aad3c;
+    --warning: #f0b429;
+    --danger: #e63946;
+}
+
+body {
+    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    background: #f5f5f0;
+    min-height: 100vh;
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+/* ── Header ── */
+header {
+    background: #fafaf6;
+    border-bottom: 2px solid var(--primary-green);
+    padding: 0.85rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 24px rgba(26, 173, 60, 0.12);
+}
+
+.navbar {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-brand h1 {
+    color: var(--primary-green);
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+}
+
+.tagline {
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+}
+
+/* ── Connect / Disconnect Buttons — Neon Glow ── */
+.btn-connect,
+.btn-disconnect {
+    background: var(--primary-green);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.9rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.25s ease, background 0.2s ease;
+    box-shadow: 0 4px 16px rgba(26, 173, 60, 0.35);
+}
+
+.btn-connect::after,
+.btn-disconnect::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%);
+    transform: translateX(-120%);
+    transition: transform 0.5s ease;
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+.btn-connect:hover::after { transform: translateX(120%); }
+
+.btn-connect:hover {
+    background: var(--light-green);
+    transform: translateY(-2px);
+    box-shadow:
+        0 0 22px var(--neon-glow),
+        0 0 45px var(--neon-spread),
+        0 6px 20px rgba(26, 173, 60, 0.5);
+}
+
+.btn-connect:active {
+    transform: translateY(0) scale(0.97);
+    box-shadow: 0 0 32px rgba(26, 173, 60, 0.9), 0 0 65px rgba(26, 173, 60, 0.4);
+}
+
+.btn-disconnect {
+    background: transparent;
+    border: 1.5px solid rgba(26, 173, 60, 0.5);
+    color: var(--light-green);
+    box-shadow: 0 0 10px rgba(26, 173, 60, 0.1);
+}
+
+.btn-disconnect:hover {
+    background: rgba(26, 173, 60, 0.1);
+    border-color: var(--light-green);
+    color: #fff;
+    box-shadow: 0 0 20px rgba(26, 173, 60, 0.55), 0 0 40px rgba(26, 173, 60, 0.2);
+    transform: translateY(-2px);
+}
+
+.wallet-info {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+#walletAddress {
+    background: #eeeee8;
+    border: 1px solid var(--border-green);
+    padding: 0.45rem 1rem;
+    border-radius: 50px;
+    font-family: monospace;
+    font-size: 0.82rem;
+    color: var(--primary-green);
+}
+
+/* Network Warning */
+.network-warning {
+    background: var(--danger);
+    color: white;
+    text-align: center;
+    padding: 0.85rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* ── Tabs — pill style ── */
+.tabs-container {
+    max-width: 1400px;
+    margin: 1.5rem auto;
+    padding: 0 2rem;
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.tab {
+    background: #eeeee8;
+    color: var(--text-secondary);
+    border: 1.5px solid #d8d8d2;
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.tab:hover {
+    border-color: var(--primary-green);
+    color: var(--text-primary);
+    background: rgba(26, 173, 60, 0.07);
+    box-shadow: 0 0 12px rgba(26, 173, 60, 0.2);
+}
+
+.tab.active {
+    background: var(--primary-green);
+    color: white;
+    border-color: var(--primary-green);
+    box-shadow: 0 0 18px rgba(26, 173, 60, 0.5), 0 0 35px rgba(26, 173, 60, 0.2);
+}
+
+/* ── Container ── */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s;
+}
+
+.tab-content.active { display: block; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Panel ── */
+.panel {
+    background: #fafaf6;
+    border: 1.5px solid #deded8;
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.panel h2 {
+    color: var(--primary-green);
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+/* ── Hero ── */
+.hero { text-align: center; }
+
+.hero h2 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    margin-bottom: 0.8rem;
+}
+
+.hero-subtitle {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    margin-bottom: 2.5rem;
+}
+
+/* ── Stats Grid — Easypaisa style cards ── */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 1.2rem;
+    margin: 2.5rem 0;
+}
+
+.stat-card {
+    background: #fafaf6;
+    border: 1.5px solid var(--border-green);
+    border-radius: 16px;
+    padding: 1.6rem 1.4rem;
+    text-align: center;
+    transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Green left accent stripe like easypaisa info row */
+.stat-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--light-green), var(--primary-green));
+    border-radius: 16px 0 0 16px;
+}
+
+.stat-card:hover {
+    border-color: var(--primary-green);
+    box-shadow: 0 0 20px rgba(26, 173, 60, 0.25), 0 4px 16px rgba(0,0,0,0.4);
+    transform: translateY(-2px);
+}
+
+.stat-card h3 {
+    font-size: 2rem;
+    color: var(--primary-green);
+    font-weight: 800;
+    margin-bottom: 0.4rem;
+}
+
+.stat-card p {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+/* ── Contract Links ── */
+.contract-links {
+    margin-top: 2.5rem;
+    text-align: left;
+}
+
+.contract-links h3 {
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.85rem;
+}
+
+.contract-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-top: 0.85rem;
+}
+
+.contract-item {
+    background: #eeeee8;
+    border: 1px solid #d8d8d2;
+    padding: 0.85rem 1.1rem;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.contract-item:hover {
+    border-color: var(--border-green);
+    background: rgba(26, 173, 60, 0.06);
+}
+
+.contract-item span {
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+}
+
+.contract-address {
+    color: var(--primary-green);
+    text-decoration: none;
+    font-family: monospace;
+    font-size: 0.85rem;
+}
+
+.contract-address:hover { text-decoration: underline; }
+
+/* ── Info Box — Easypaisa green-accented ── */
+.info-box {
+    background: #eeeee8;
+    border-left: 4px solid var(--primary-green);
+    padding: 1.2rem 1.4rem;
+    margin: 1.5rem 0;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    color: #444;
+    line-height: 1.7;
+}
+
+.info-box.warning {
+    border-left-color: var(--warning);
+}
+
+.warning-box {
+    background: rgba(26, 173, 60, 0.06);
+    border: 1.5px solid rgba(26, 173, 60, 0.3);
+    padding: 1rem 1.2rem;
+    border-radius: 10px;
+    margin: 1rem 0;
+    font-size: 0.88rem;
+}
+
+/* ── Forms ── */
+.input-group {
+    margin: 1.5rem 0;
+    position: relative;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.86rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.input-group input {
+    width: 100%;
+    background: #eeeee8;
+    border: 1.5px solid #d0d0c8;
+    color: var(--text-primary);
+    padding: 0.9rem 1rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 3px rgba(26, 173, 60, 0.14), 0 0 16px rgba(26, 173, 60, 0.15);
+}
+
+.input-group small {
+    display: block;
+    margin-top: 0.45rem;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+}
+
+.btn-max {
+    position: absolute;
+    right: 10px;
+    top: 38px;
+    background: var(--primary-green);
+    color: white;
+    border: none;
+    padding: 0.4rem 0.85rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.8rem;
+    transition: box-shadow 0.2s;
+}
+
+.btn-max:hover {
+    box-shadow: 0 0 12px rgba(26, 173, 60, 0.6);
+}
+
+/* ── Primary / Secondary / Danger Buttons — Neon Glow ── */
+.btn-primary,
+.btn-secondary,
+.btn-danger {
+    width: 100%;
+    padding: 0.95rem 2rem;
+    border: none;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.25s ease, background 0.2s ease;
+    margin: 0.5rem 0;
+    letter-spacing: 0.2px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Shimmer sweep for primary */
+.btn-primary::after,
+.btn-secondary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.18) 50%, transparent 70%);
+    transform: translateX(-120%);
+    transition: transform 0.5s ease;
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+.btn-primary:hover::after,
+.btn-secondary:hover::after {
+    transform: translateX(120%);
+}
+
+/* Primary — solid green */
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+    color: white;
+    box-shadow: 0 4px 16px rgba(26, 173, 60, 0.35);
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: linear-gradient(135deg, var(--light-green), var(--primary-green));
+    transform: translateY(-2px);
+    box-shadow:
+        0 0 22px var(--neon-glow),
+        0 0 45px var(--neon-spread),
+        0 6px 20px rgba(26, 173, 60, 0.5);
+}
+
+.btn-primary:active:not(:disabled) {
+    transform: translateY(0) scale(0.98);
+    box-shadow:
+        0 0 32px rgba(26, 173, 60, 0.9),
+        0 0 65px rgba(26, 173, 60, 0.4),
+        inset 0 0 14px rgba(255, 255, 255, 0.07);
+}
+
+.btn-primary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+/* Secondary — outline */
+.btn-secondary {
+    background: transparent;
+    color: var(--light-green);
+    border: 1.5px solid rgba(26, 173, 60, 0.5);
+    box-shadow: 0 0 10px rgba(26, 173, 60, 0.1);
+}
+
+.btn-secondary:hover {
+    background: rgba(26, 173, 60, 0.08);
+    border-color: var(--light-green);
+    color: #fff;
+    box-shadow:
+        0 0 20px rgba(26, 173, 60, 0.55),
+        0 0 40px rgba(26, 173, 60, 0.2);
+    transform: translateY(-2px);
+}
+
+.btn-secondary:active {
+    box-shadow: 0 0 30px rgba(26, 173, 60, 0.75), inset 0 0 12px rgba(26, 173, 60, 0.15);
+}
+
+/* Danger */
+.btn-danger {
+    background: var(--danger);
+    color: white;
+    box-shadow: 0 4px 14px rgba(230, 57, 70, 0.3);
+}
+
+.btn-danger:hover {
+    background: #c1121f;
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(230, 57, 70, 0.65), 0 6px 18px rgba(230, 57, 70, 0.4);
+}
+
+.btn-danger:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 0 30px rgba(230, 57, 70, 0.85);
+}
+
+/* ── Token Split Display ── */
+.token-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    margin: 1.5rem 0;
+}
+
+.split-item {
+    background: #fafaf6;
+    padding: 1.4rem;
+    border-radius: 12px;
+    text-align: center;
+    border: 1.5px solid var(--border-green);
+    transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.split-item:hover {
+    border-color: var(--primary-green);
+    box-shadow: 0 0 16px rgba(26, 173, 60, 0.2);
+}
+
+.split-item h3 {
+    color: var(--primary-green);
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-top: 0.4rem;
+}
+
+/* ── Staking Info Cards ── Easypaisa style ── */
+.staking-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.info-card {
+    background: #fafaf6;
+    padding: 1.25rem;
+    border-radius: 14px;
+    border: 1px solid #deded8;
+    transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Green top bar on cards like easypaisa tiles */
+.info-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-green), var(--light-green));
+    opacity: 0;
+    transition: opacity 0.25s;
+    border-radius: 14px 14px 0 0;
+}
+
+.info-card:hover {
+    border-color: var(--border-green);
+    box-shadow: 0 0 18px rgba(26, 173, 60, 0.15), 0 4px 14px rgba(0,0,0,0.5);
+    transform: translateY(-2px);
+}
+
+.info-card:hover::after {
+    opacity: 1;
+}
+
+.info-card h4 {
+    color: var(--text-secondary);
+    margin-bottom: 0.4rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-card p {
+    color: var(--primary-green);
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+/* ── User Info ── */
+.user-contribution,
+.user-stake-info {
+    background: #eeeee8;
+    padding: 1.4rem;
+    border-radius: 12px;
+    margin-top: 1.5rem;
+    border: 1px solid #d8d8d2;
+}
+
+.user-contribution p,
+.user-stake-info p {
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.user-contribution span,
+.user-stake-info span {
+    color: var(--primary-green);
+    font-weight: 600;
+}
+
+/* ── Rewards Display ── */
+.rewards-display {
+    text-align: center;
+    padding: 2.5rem;
+    background: #fafaf6;
+    border-radius: 16px;
+    margin: 1.5rem 0;
+    border: 1.5px solid var(--border-green);
+}
+
+.reward-amount { margin: 1.5rem 0; }
+
+.reward-amount h1 {
+    font-size: 3.5rem;
+    color: var(--primary-green);
+    font-weight: 800;
+    text-shadow: 0 0 20px rgba(26, 173, 60, 0.4);
+}
+
+/* ── Table ── */
+.rewards-table {
+    width: 100%;
+    margin: 1.5rem 0;
+    border-collapse: collapse;
+}
+
+.rewards-table th,
+.rewards-table td {
+    padding: 0.9rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #deded8;
+    font-size: 0.88rem;
+}
+
+.rewards-table th {
+    background: #eeeee8;
+    color: var(--primary-green);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.76rem;
+    letter-spacing: 0.5px;
+}
+
+.rewards-table tbody tr:hover {
+    background: rgba(26, 173, 60, 0.05);
+}
+
+/* ── Vesting ── */
+.vesting-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.vesting-card {
+    background: #fafaf6;
+    padding: 1.8rem;
+    border-radius: 14px;
+    border: 1.5px solid var(--border-green);
+}
+
+.vesting-card h3 {
+    color: var(--primary-green);
+    margin-bottom: 1.2rem;
+    font-weight: 700;
+}
+
+.vesting-stats p { margin: 0.7rem 0; font-size: 0.9rem; color: #555; }
+.vesting-stats strong,
+.vesting-stats span { color: var(--primary-green); }
+
+/* ── Transparency ── */
+.transparency-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 1.2rem;
+    margin: 1.5rem 0;
+}
+
+.transparency-card {
+    background: #fafaf6;
+    padding: 1.6rem;
+    border-radius: 14px;
+    border: 1px solid #deded8;
+    transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.transparency-card:hover {
+    border-color: var(--border-green);
+    box-shadow: 0 0 16px rgba(26, 173, 60, 0.15);
+}
+
+.transparency-card h3 {
+    color: var(--primary-green);
+    margin-bottom: 0.85rem;
+    font-weight: 700;
+}
+
+.allocation {
+    font-size: 1.5rem;
+    color: var(--primary-green);
+    font-weight: 800;
+    margin: 0.85rem 0;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 7px;
+    background: #deded8;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 0.85rem 0;
+}
+
+.progress {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-green), var(--light-green));
+    border-radius: 10px;
+    transition: width 0.5s ease;
+    box-shadow: 0 0 8px rgba(26, 173, 60, 0.5);
+}
+
+.verify-link {
+    color: var(--primary-green);
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 0.85rem;
+    font-size: 0.88rem;
+}
+
+.verify-link:hover { text-decoration: underline; }
+
+/* ── Ownership / Status ── */
+.ownership-status { margin-top: 2.5rem; }
+
+.status-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 0.8rem;
+    margin-top: 0.85rem;
+}
+
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #eeeee8;
+    padding: 0.85rem 1.1rem;
+    border-radius: 10px;
+    border: 1px solid #d8d8d2;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.status-badge {
+    padding: 0.32rem 0.85rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+
+.status-badge.renounced {
+    background: var(--primary-green);
+    color: #fff;
+    box-shadow: 0 0 10px rgba(26, 173, 60, 0.4);
+}
+
+.status-badge.active {
+    background: var(--warning);
+    color: #000;
+}
+
+.status-badge.warning {
+    background: rgba(240, 180, 41, 0.12);
+    color: var(--warning);
+    border: 1px solid rgba(240, 180, 41, 0.4);
+}
+
+/* ── Features List ── */
+.features-list {
+    list-style: none;
+    margin: 1.5rem 0;
+}
+
+.features-list li {
+    background: #eeeee8;
+    padding: 0.9rem 1.1rem;
+    margin: 0.45rem 0;
+    border-radius: 10px;
+    border-left: 4px solid var(--primary-green);
+    font-size: 0.9rem;
+    color: #444;
+}
+
+/* ── Airdrop ── */
+.verification-box,
+.airdrop-claim {
+    background: #fafaf6;
+    padding: 1.8rem;
+    border-radius: 14px;
+    margin: 1.5rem 0;
+    border: 1px solid #deded8;
+}
+
+.verification-box h3,
+.airdrop-claim h3 {
+    color: var(--primary-green);
+    font-weight: 700;
+    margin-bottom: 0.85rem;
+}
+
+.bonus-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.2rem;
+    margin: 1.5rem 0;
+}
+
+.bonus-card {
+    background: #fafaf6;
+    padding: 1.6rem;
+    border-radius: 14px;
+    border: 1px solid #deded8;
+    text-align: center;
+    transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s;
+}
+
+.bonus-card:hover {
+    border-color: var(--border-green);
+    box-shadow: 0 0 18px rgba(26, 173, 60, 0.18);
+    transform: translateY(-2px);
+}
+
+.bonus-card h4 {
+    color: var(--primary-green);
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+}
+
+.bonus-card p { color: #666; font-size: 0.88rem; }
+
+/* ── Footer ── */
+footer {
+    background: #eeeee8;
+    border-top: 2px solid var(--primary-green);
+    padding: 2.5rem 2rem 1.2rem;
+    margin-top: 4rem;
+    box-shadow: 0 -2px 24px rgba(26, 173, 60, 0.1);
+}
+
+.footer-content {
+    max-width: 1400px;
+    margin: 0 auto 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 2rem;
+}
+
+.footer-section h4 {
+    color: var(--primary-green);
+    margin-bottom: 0.85rem;
+    font-weight: 700;
+}
+
+.footer-section p {
+    color: var(--text-secondary);
+    font-size: 0.86rem;
+}
+
+.footer-section a {
+    display: block;
+    color: var(--text-secondary);
+    text-decoration: none;
+    margin: 0.4rem 0;
+    font-size: 0.86rem;
+    transition: color 0.2s;
+}
+
+.footer-section a:hover { color: var(--primary-green); }
+
+.footer-disclaimer {
+    max-width: 1400px;
+    margin: 1.5rem auto 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid #d0d0c8;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+}
+
+/* ── Utility ── */
+.hidden { display: none !important; }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .navbar { flex-direction: column; gap: 0.85rem; }
+    .tabs-container { padding: 0 1rem; }
+    .tab { font-size: 0.8rem; padding: 0.5rem 0.85rem; }
+    .container { padding: 1rem; }
+    .panel { padding: 1.25rem; }
+    .hero h2 { font-size: 1.9rem; }
+    .stats-grid,
+    .staking-info,
+    .vesting-grid,
+    .transparency-grid { grid-template-columns: 1fr; }
+    .token-split { grid-template-columns: 1fr; }
+}
+
+/* ── Loading ── */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.45; }
+}
+
+.loading { animation: pulse 1.5s infinite; }
