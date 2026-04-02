@@ -1,0 +1,337 @@
+/* Receipt Modal — Elyson Protocol — Easypaisa-inspired green/white/black */
+
+.receipt-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: rgba(0, 0, 0, 0.92);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.receipt-modal.active {
+    opacity: 1;
+}
+
+/* Main receipt card — clean white like easypaisa receipt */
+.receipt-container {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    max-height: 94vh;
+    background: #ffffff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+    animation: slideUp 0.35s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ── Torn-edge top strip (decorative) ── */
+.receipt-container::before {
+    content: '';
+    display: block;
+    height: 10px;
+    background:
+        radial-gradient(circle at 5px -1px, transparent 6px, #1aad3c 6px)
+        0 0 / 12px 10px repeat-x;
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 2;
+}
+
+/* ── Header ── green like easypaisa ── */
+.receipt-header {
+    position: relative;
+    background: linear-gradient(160deg, #1aad3c 0%, #0d8c2e 100%);
+    padding: 22px 20px 18px;
+    text-align: center;
+    padding-top: 26px; /* offset for torn edge */
+}
+
+.receipt-logo h2 {
+    color: #ffffff;
+    margin: 0;
+    font-size: 18px;
+    font-weight: 800;
+    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    letter-spacing: 0.3px;
+}
+
+.receipt-subtitle {
+    color: rgba(255, 255, 255, 0.75);
+    margin: 5px 0 0;
+    font-size: 10px;
+    font-weight: 700;
+    font-family: 'Segoe UI', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+/* Close button */
+.receipt-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: rgba(255, 255, 255, 0.25);
+    border: none;
+    color: white;
+    font-size: 20px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    line-height: 1;
+}
+
+.receipt-close:hover {
+    background: rgba(255, 255, 255, 0.4);
+    transform: rotate(90deg);
+}
+
+/* ── Status section — white background ── */
+.receipt-body {
+    background: #f7f7f7;
+    padding: 0;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.receipt-status {
+    text-align: center;
+    padding: 22px 20px 16px;
+    background: #ffffff;
+    border-bottom: 1px solid #eaeaea;
+}
+
+/* Green circle checkmark like easypaisa */
+.status-icon {
+    width: 54px;
+    height: 54px;
+    background: #1aad3c;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+    font-size: 26px;
+    color: white;
+    box-shadow: 0 4px 16px rgba(26, 173, 60, 0.35);
+}
+
+.status-icon.processing {
+    background: #f0b429;
+    animation: spinAxis 1.8s linear infinite;
+}
+
+@keyframes spinAxis {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+.receipt-status h3 {
+    color: #1aad3c;
+    margin: 6px 0 3px;
+    font-size: 20px;
+    font-weight: 800;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.receipt-status p {
+    color: #777;
+    margin: 0;
+    font-size: 13px;
+}
+
+/* Action type label */
+.receipt-action-type {
+    font-size: 14px;
+    color: #1aad3c;
+    text-align: center;
+    margin: 14px 20px 0;
+    font-weight: 700;
+    background: rgba(26, 173, 60, 0.08);
+    border-radius: 8px;
+    padding: 8px 12px;
+}
+
+/* ── Details rows — white card, easypaisa style ── */
+.receipt-details {
+    background: #ffffff;
+    border-radius: 12px;
+    margin: 12px 16px;
+    padding: 4px 0;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+.receipt-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 11px 16px;
+    font-size: 13px;
+    color: #444;
+    border-bottom: 1px solid #f0f0f0;
+    gap: 8px;
+}
+
+.receipt-row:last-child {
+    border-bottom: none;
+}
+
+.receipt-row .label {
+    color: #888;
+    font-weight: 600;
+    font-size: 12px;
+    min-width: 100px;
+}
+
+.receipt-row strong {
+    color: #1a1a1a;
+    font-weight: 700;
+    text-align: right;
+    word-break: break-all;
+}
+
+/* Total amount row — highlighted like easypaisa */
+.receipt-row.total-row {
+    background: #f0faf3;
+    border-top: 1px solid #c8ecd2;
+    margin-top: 4px;
+    padding: 13px 16px;
+}
+
+.receipt-row.total-row .label {
+    color: #1aad3c;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.receipt-row.total-row strong {
+    color: #1aad3c;
+    font-size: 17px;
+    font-weight: 800;
+}
+
+/* ── Action buttons ── */
+.receipt-btn {
+    display: block;
+    width: calc(100% - 32px);
+    max-width: 100%;
+    margin: 8px 16px;
+    padding: 13px 20px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    border: none;
+    background: #1aad3c;
+    color: white;
+    transition: all 0.2s;
+    box-shadow: 0 4px 14px rgba(26, 173, 60, 0.3);
+}
+
+.receipt-btn:hover {
+    background: #0d8c2e;
+    transform: translateY(-1px);
+}
+
+/* Screenshot button — secondary style */
+.receipt-btn.screenshot {
+    background: #ffffff;
+    color: #1aad3c;
+    border: 2px solid #1aad3c;
+    box-shadow: none;
+    margin-bottom: 4px;
+}
+
+.receipt-btn.screenshot:hover {
+    background: #f0faf3;
+    transform: translateY(-1px);
+}
+
+.receipt-btn.screenshot:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ── Footer strip ── */
+.receipt-footer {
+    background: #ffffff;
+    border-top: 1px solid #efefef;
+    padding: 12px 16px 14px;
+    text-align: center;
+    font-size: 11px;
+    color: #aaa;
+    margin-top: 4px;
+    letter-spacing: 0.3px;
+}
+
+.receipt-footer .receipt-timestamp {
+    color: #555;
+    font-weight: 600;
+    font-size: 12px;
+    display: block;
+    margin-bottom: 2px;
+}
+
+/* ── Bottom action bar (share row like easypaisa) ── */
+.receipt-actions-bar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 12px 8px 16px;
+    background: #ffffff;
+    border-top: 1px solid #f0f0f0;
+}
+
+.receipt-action-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    color: #888;
+    font-size: 11px;
+    font-weight: 600;
+    transition: color 0.2s;
+    padding: 4px 12px;
+    border-radius: 8px;
+}
+
+.receipt-action-item:hover {
+    color: #1aad3c;
+    background: rgba(26, 173, 60, 0.06);
+}
+
+.receipt-action-item svg,
+.receipt-action-item .action-icon {
+    font-size: 20px;
+    color: #555;
+}
+
+/* Desktop */
+@media (min-width: 769px) {
+    .receipt-container {
+        max-width: 440px;
+        max-height: 96vh;
+    }
+}
+
+/* Slide up animation */
+@keyframes slideUp {
+    from { transform: translateY(60px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
