@@ -1,0 +1,571 @@
+/* ============================================================
+   Receipt Modal — Elyson Protocol — Futuristic Neon
+   Fonts: Bebas Neue · Chakra Petch · JetBrains Mono · Exo 2
+   Matches: receipt.js class structure exactly
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Chakra+Petch:wght@400;600;700&family=JetBrains+Mono:wght@300;400;500;700&family=Exo+2:wght@300;400;600;700;800&display=swap');
+
+:root {
+  --neon:         #00ff88;
+  --neon2:        #00e676;
+  --neon-glow:    rgba(0, 255, 136, 0.75);
+  --neon-spread:  rgba(0, 255, 136, 0.25);
+  --neon-border:  rgba(0, 255, 136, 0.22);
+  --neon-subtle:  rgba(0, 255, 136, 0.05);
+  --red:          #ff2244;
+  --red-glow:     rgba(255, 34, 68, 0.6);
+  --warning:      #f0b429;
+  --bg:           #040a07;
+  --card:         #070f0a;
+  --card2:        #0a1610;
+  --border:       rgba(0, 255, 136, 0.12);
+  --border-mid:   rgba(0, 255, 136, 0.28);
+  --text:         #d4ffe8;
+  --text-dim:     #3d7055;
+  --font-title:   'Bebas Neue', sans-serif;
+  --font-head:    'Chakra Petch', sans-serif;
+  --font-body:    'Exo 2', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+}
+
+/* ── Modal overlay ── */
+.receipt-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(4, 10, 7, 0.96);
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.receipt-modal.active {
+  display: flex;
+  opacity: 1;
+}
+
+/* Overlay click target */
+.receipt-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+/* ── Receipt container ── */
+.receipt-container {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  background: var(--card);
+  border: 1px solid var(--border-mid);
+  border-radius: 6px;
+  overflow: visible;
+  box-shadow:
+    0 0 0 1px rgba(0,255,136,0.05),
+    0 0 80px rgba(0,255,136,0.12),
+    0 40px 100px rgba(0,0,0,0.9);
+  animation: slideUp 0.45s cubic-bezier(0.16,1,0.3,1) both;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* Corner bracket decorations */
+.receipt-container::before,
+.receipt-container::after {
+  content: '';
+  position: absolute;
+  width: 22px; height: 22px;
+  border-color: var(--neon);
+  border-style: solid;
+  z-index: 2;
+  pointer-events: none;
+  box-shadow: 0 0 8px var(--neon-glow);
+}
+.receipt-container::before {
+  top: 8px; left: 8px;
+  border-width: 2px 0 0 2px;
+  border-radius: 4px 0 0 0;
+}
+.receipt-container::after {
+  top: 8px; right: 8px;
+  border-width: 2px 2px 0 0;
+  border-radius: 0 4px 0 0;
+}
+
+/* ── Header ── */
+.receipt-header {
+  position: relative;
+  background: linear-gradient(160deg, #031a0d 0%, #050f09 100%);
+  padding: 22px 20px 18px;
+  text-align: center;
+  border-bottom: 1px solid var(--border-mid);
+  border-radius: 6px 6px 0 0;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.receipt-header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, transparent 20%, rgba(0,255,136,0.06) 50%, transparent 80%);
+  animation: holoshimmer 3.5s ease infinite;
+  pointer-events: none;
+}
+
+@keyframes holoshimmer {
+  0%   { transform: translateX(-100%) skewX(-12deg); }
+  100% { transform: translateX(220%) skewX(-12deg); }
+}
+
+.receipt-logo h2 {
+  font-family: var(--font-title);
+  font-size: 32px;
+  letter-spacing: 3px;
+  color: var(--neon);
+  text-shadow:
+    0 0 20px var(--neon-glow),
+    0 0 50px var(--neon-spread),
+    0 0 80px rgba(0,255,136,0.1);
+  line-height: 1.1;
+  margin: 0;
+  position: relative;
+}
+
+.receipt-subtitle {
+  font-family: var(--font-head);
+  color: var(--text-dim);
+  margin: 6px 0 0;
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  position: relative;
+}
+
+/* Close button */
+.receipt-close {
+  position: absolute;
+  top: 13px; right: 14px;
+  background: rgba(0,255,136,0.06);
+  border: 1px solid var(--border);
+  color: var(--neon);
+  font-size: 18px;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  line-height: 1;
+  font-family: var(--font-body);
+}
+
+.receipt-close:hover {
+  background: rgba(0,255,136,0.12);
+  border-color: var(--neon);
+  box-shadow: 0 0 12px rgba(0,255,136,0.3);
+  transform: rotate(90deg);
+}
+
+/* ── Body ── */
+.receipt-body {
+  background: var(--card);
+  padding: 0;
+  flex: 1;
+  border-radius: 0 0 6px 6px;
+}
+
+/* ── Status section ── */
+.receipt-status {
+  text-align: center;
+  padding: 24px 20px 16px;
+  background: #060d09;
+  border-bottom: 1px solid rgba(0,255,136,0.06);
+}
+
+/* Status icon */
+.status-icon {
+  width: 60px; height: 60px;
+  margin: 0 auto 14px;
+  background: radial-gradient(circle, #0d2e1a, #041208);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  border: 1.5px solid rgba(0,255,136,0.35);
+  box-shadow:
+    0 0 0 5px rgba(0,255,136,0.07),
+    0 0 30px rgba(0,255,136,0.4),
+    inset 0 0 20px rgba(0,255,136,0.07);
+  position: relative;
+}
+
+/* Subtle dashed ring */
+.status-icon::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1px dashed rgba(0,255,136,0.2);
+  animation: spinring 8s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes spinring {
+  to { transform: rotate(360deg); }
+}
+
+.status-icon.error {
+  border-color: rgba(255,34,68,0.4);
+  box-shadow:
+    0 0 0 5px rgba(255,34,68,0.07),
+    0 0 30px rgba(255,34,68,0.45),
+    inset 0 0 20px rgba(255,34,68,0.07);
+}
+
+.status-icon.error::before {
+  border-color: rgba(255,34,68,0.2);
+}
+
+.receipt-status h3 {
+  font-family: var(--font-head);
+  color: var(--neon);
+  margin: 6px 0 4px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 0 0 20px var(--neon-glow);
+}
+
+.receipt-status h3.error,
+.receipt-status h3.failed {
+  color: var(--red);
+  text-shadow: 0 0 20px var(--red-glow);
+}
+
+.receipt-status p {
+  font-family: var(--font-mono);
+  color: var(--text-dim);
+  margin: 0;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  font-weight: 300;
+}
+
+/* ── Details area ── */
+.receipt-details {
+  padding: 4px 0 0;
+}
+
+/* ── Receipt section ── */
+.receipt-section {
+  padding: 0 16px;
+  margin-bottom: 4px;
+}
+
+.receipt-section h4 {
+  font-family: var(--font-head);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin: 14px 0 6px;
+}
+
+/* ── Action type label ── */
+.receipt-action-type {
+  font-family: var(--font-head);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--neon);
+  text-align: center;
+  background: var(--neon-subtle);
+  border: 1px solid var(--border-mid);
+  border-radius: 6px;
+  padding: 10px 14px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-shadow: 0 0 12px var(--neon-spread);
+  position: relative;
+  overflow: hidden;
+  margin: 0 0 4px;
+}
+
+.receipt-action-type::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -60%;
+  width: 40%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0,255,136,0.1), transparent);
+  animation: scanline 2.5s ease infinite;
+}
+
+@keyframes scanline { to { left: 120%; } }
+
+/* ── Detail rows ── */
+.receipt-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 11px 14px;
+  color: var(--text);
+  border-bottom: 1px solid rgba(0,255,136,0.05);
+  gap: 10px;
+  background: var(--card2);
+  transition: background 0.2s;
+}
+
+.receipt-row:first-of-type {
+  border-top: 1px solid var(--border);
+  border-radius: 8px 8px 0 0;
+}
+
+.receipt-row:last-of-type {
+  border-bottom: 1px solid var(--border);
+  border-radius: 0 0 8px 8px;
+}
+
+.receipt-row:only-of-type {
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.receipt-row:hover { background: rgba(0,255,136,0.02); }
+
+.receipt-row span {
+  font-family: var(--font-mono);
+  color: var(--text-dim);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  min-width: 90px;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+
+.receipt-row strong {
+  font-family: var(--font-mono);
+  color: var(--text);
+  font-size: 11.5px;
+  font-weight: 500;
+  text-align: right;
+  word-break: break-all;
+}
+
+/* Highlight row */
+.receipt-row.highlight {
+  background: rgba(0,255,136,0.04);
+  border-top: 1px solid var(--border-mid) !important;
+  border-bottom: 1px solid var(--border-mid) !important;
+}
+
+.receipt-row.highlight span {
+  font-family: var(--font-head);
+  color: var(--neon);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.receipt-row.highlight strong {
+  font-family: var(--font-head);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--neon);
+  text-shadow: 0 0 20px var(--neon-glow), 0 0 40px var(--neon-spread);
+}
+
+/* Warning row (penalty) */
+.receipt-row.warning {
+  background: rgba(240,180,41,0.04);
+  border-color: rgba(240,180,41,0.2) !important;
+}
+
+.receipt-row.warning span { color: var(--warning); }
+.receipt-row.warning strong { color: var(--warning); }
+
+/* Highlight green */
+strong.highlight-green {
+  color: var(--neon) !important;
+  text-shadow: 0 0 8px rgba(0,255,136,0.3);
+}
+
+/* Code (tx hash, addresses) */
+.receipt-row code,
+code.tx-hash {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--neon);
+  background: transparent;
+  text-align: right;
+  word-break: break-all;
+  font-weight: 400;
+}
+
+/* Transaction info section */
+.receipt-section.transaction-info .receipt-row {
+  border-left: 2px solid rgba(0,255,136,0.12);
+}
+
+/* ── Actions buttons area ── */
+.receipt-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 16px 10px;
+}
+
+/* ── Buttons ── */
+.receipt-btn {
+  flex: 1;
+  min-width: 130px;
+  padding: 13px 12px;
+  border-radius: 50px;
+  font-family: var(--font-head);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-align: center;
+  border: none;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.25s ease;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.receipt-btn::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.18) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 0.5s ease;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.receipt-btn:hover::after { transform: translateX(120%); }
+
+/* Primary — View on Explorer */
+.receipt-btn.primary {
+  background: linear-gradient(135deg, #00c96a, #007a3d);
+  color: #000;
+  box-shadow: 0 4px 20px rgba(0,255,136,0.28);
+  flex-basis: 100%;
+}
+
+.receipt-btn.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px var(--neon-glow), 0 6px 22px rgba(0,255,136,0.4);
+}
+
+/* Secondary — Copy Hash */
+.receipt-btn.secondary {
+  background: transparent;
+  color: var(--neon);
+  border: 1px solid var(--border-mid);
+  box-shadow: 0 0 10px rgba(0,255,136,0.06);
+  flex-basis: 100%;
+}
+
+.receipt-btn.secondary:hover {
+  background: var(--neon-subtle);
+  border-color: var(--neon);
+  box-shadow: 0 0 20px rgba(0,255,136,0.3);
+}
+
+/* Screenshot */
+.receipt-btn.screenshot {
+  background: linear-gradient(135deg, #00c96a, #007a3d);
+  color: #000;
+  box-shadow: 0 4px 20px rgba(0,255,136,0.28);
+}
+
+.receipt-btn.screenshot:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px var(--neon-glow), 0 6px 22px rgba(0,255,136,0.4);
+}
+
+/* Tertiary — Close */
+.receipt-btn.tertiary {
+  background: transparent;
+  color: var(--neon);
+  border: 1px solid var(--border-mid);
+  box-shadow: 0 0 10px rgba(0,255,136,0.06);
+}
+
+.receipt-btn.tertiary:hover {
+  background: var(--neon-subtle);
+  border-color: var(--neon);
+  box-shadow: 0 0 20px rgba(0,255,136,0.3);
+}
+
+.receipt-btn:active {
+  transform: scale(0.97);
+  box-shadow: 0 0 40px var(--neon-glow), inset 0 0 12px rgba(255,255,255,0.06);
+}
+
+.receipt-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── Footer ── */
+.receipt-footer {
+  background: #040b07;
+  border-top: 1px solid rgba(0,255,136,0.07);
+  padding: 10px 16px 18px;
+  text-align: center;
+  border-radius: 0 0 6px 6px;
+  flex-shrink: 0;
+}
+
+.receipt-footer p {
+  font-family: var(--font-head);
+  font-size: 8px;
+  color: rgba(0,255,136,0.15);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  margin: 0 0 3px;
+}
+
+.receipt-timestamp {
+  font-family: var(--font-mono) !important;
+  color: rgba(0,255,136,0.2) !important;
+  font-size: 10px !important;
+  font-weight: 400;
+  display: block;
+  letter-spacing: 1px;
+}
+
+/* ── Animations ── */
+@keyframes slideUp {
+  from { transform: translateY(60px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* ── Desktop ── */
+@media (min-width: 769px) {
+  .receipt-container { max-width: 440px; }
+  .receipt-logo h2 { font-size: 38px; }
+}
+
+/* ── Scrollbar ── */
+.receipt-container::-webkit-scrollbar { width: 4px; }
+.receipt-container::-webkit-scrollbar-track { background: var(--card); }
+.receipt-container::-webkit-scrollbar-thumb { background: rgba(0,255,136,0.2); border-radius: 2px; }
