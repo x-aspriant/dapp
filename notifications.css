@@ -1,0 +1,211 @@
+/* Custom Notification System */
+
+.notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10001;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 400px;
+    pointer-events: none;
+}
+
+.notification {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border: 2px solid #ff6b35;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(255, 107, 53, 0.4);
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    animation: slideInRight 0.4s ease;
+    pointer-events: all;
+    position: relative;
+    overflow: hidden;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(450px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.notification.hiding {
+    animation: slideOutRight 0.3s ease forwards;
+}
+
+@keyframes slideOutRight {
+    to {
+        transform: translateX(450px);
+        opacity: 0;
+    }
+}
+
+.notification-icon {
+    font-size: 32px;
+    flex-shrink: 0;
+    animation: bounce 0.6s ease;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
+.notification-content {
+    flex: 1;
+}
+
+.notification-title {
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    margin: 0 0 8px 0;
+}
+
+.notification-message {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0;
+    word-wrap: break-word;
+}
+
+.notification-close {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.notification-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+}
+
+/* Notification Types */
+.notification.success {
+    border-color: #4caf50;
+    box-shadow: 0 10px 40px rgba(76, 175, 80, 0.4);
+}
+
+.notification.success .notification-icon {
+    color: #4caf50;
+}
+
+.notification.error {
+    border-color: #f44336;
+    box-shadow: 0 10px 40px rgba(244, 67, 54, 0.4);
+}
+
+.notification.error .notification-icon {
+    color: #f44336;
+}
+
+.notification.warning {
+    border-color: #ff9800;
+    box-shadow: 0 10px 40px rgba(255, 152, 0, 0.4);
+}
+
+.notification.warning .notification-icon {
+    color: #ff9800;
+}
+
+.notification.info {
+    border-color: #2196f3;
+    box-shadow: 0 10px 40px rgba(33, 150, 243, 0.4);
+}
+
+.notification.info .notification-icon {
+    color: #2196f3;
+}
+
+/* Progress bar */
+.notification-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #ff6b35, #ff8c42);
+    width: 100%;
+    transform-origin: left;
+    animation: shrink linear;
+}
+
+@keyframes shrink {
+    to {
+        transform: scaleX(0);
+    }
+}
+
+.notification.success .notification-progress {
+    background: linear-gradient(90deg, #4caf50, #66bb6a);
+}
+
+.notification.error .notification-progress {
+    background: linear-gradient(90deg, #f44336, #e57373);
+}
+
+.notification.warning .notification-progress {
+    background: linear-gradient(90deg, #ff9800, #ffb74d);
+}
+
+.notification.info .notification-progress {
+    background: linear-gradient(90deg, #2196f3, #42a5f5);
+}
+
+/* Wallet Address Styling */
+.notification-address {
+    font-family: 'Courier New', monospace;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin-top: 8px;
+    color: #ff6b35;
+    font-size: 13px;
+    display: inline-block;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .notification-container {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+
+    .notification {
+        padding: 15px;
+    }
+
+    .notification-icon {
+        font-size: 28px;
+    }
+
+    .notification-title {
+        font-size: 14px;
+    }
+
+    .notification-message {
+        font-size: 13px;
+    }
+}
