@@ -1,0 +1,196 @@
+/* Receipt Modal - Elyson Protocol - Updated: black subtitle + larger/bolder + font change */
+
+.receipt-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: rgba(0, 0, 0, 0.88);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.receipt-modal.active {
+    opacity: 1;
+}
+
+.receipt-container {
+    position: relative;
+    width: 100%;
+    max-width: 620px;
+    max-height: 94vh;
+    background: linear-gradient(135deg, #111 0%, #1a1a1a 100%);
+    border: 2px solid #ff6b35;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 70px rgba(255, 107, 53, 0.25);
+    animation: slideUp 0.35s ease;
+}
+
+.receipt-header {
+    position: relative;
+    background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+    padding: 18px 24px;
+    text-align: center;
+    border-bottom: 3px solid #ff8c42;
+}
+
+.receipt-logo h2 {
+    color: black;                           /* kept black */
+    margin: 0;
+    font-size: 23px;                        /* slightly larger for better presence */
+    font-weight: 800;                       /* bolder */
+    font-family: 'Segoe UI', 'Roboto', sans-serif;  /* ← changed font - modern & clean */
+    letter-spacing: 0.5px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+
+.receipt-subtitle {
+    color: black;                           /* ← changed from blue to black */
+    margin: 6px 0 0;
+    font-size: 15px;                        /* ← increased size */
+    font-weight: 900;                       /* ← very bold */
+    font-family: 'Segoe UI', 'Roboto', sans-serif;  /* same modern font */
+    text-transform: uppercase;              /* optional - makes it stand out more */
+    letter-spacing: 1px;
+}
+
+/* Close button - top right */
+.receipt-close {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    background: rgba(0, 0, 0, 0.4);
+    border: none;
+    color: white;
+    font-size: 26px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.receipt-close:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: rotate(90deg);
+}
+
+/* Status icon spin (on its own axis - unchanged) */
+.status-icon {
+    font-size: 52px;
+    margin-bottom: 12px;
+    color: #ff8c42;
+    display: inline-block;
+}
+
+.status-icon.processing {
+    animation: spinAxis 1.8s linear infinite;
+}
+
+@keyframes spinAxis {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+/* Rest remains compact & professional */
+.receipt-body {
+    padding: 20px 24px 16px;
+}
+
+.receipt-status {
+    text-align: center;
+    padding: 24px 16px;
+    background: rgba(30, 30, 30, 0.7);
+    border-radius: 12px;
+    margin-bottom: 16px;
+}
+
+.receipt-status h3 {
+    color: #ff8c42;
+    margin: 8px 0 4px;
+    font-size: 20px;
+}
+
+.receipt-status p {
+    color: #ccc;
+    margin: 0;
+    font-size: 14px;
+}
+
+.receipt-action-type {
+    font-size: 18px;
+    color: #ff8c42;
+    text-align: center;
+    margin: 20px 0 12px;
+    font-weight: 600;
+}
+
+.receipt-btn {
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+    display: block;
+}
+
+.receipt-details {
+    background: rgba(20, 20, 20, 0.6);
+    border-radius: 10px;
+    padding: 16px;
+    margin: 16px 0;
+}
+
+.receipt-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 9px 0;
+    font-size: 14px;
+    color: #ddd;
+    border-bottom: 1px solid rgba(255, 107, 53, 0.12);
+}
+
+.receipt-row:last-child {
+    border-bottom: none;
+}
+
+.receipt-row strong {
+    color: #ff8c42;
+}
+
+.receipt-footer {
+    background: rgba(15, 15, 20, 0.85);
+    border-top: 1px solid rgba(255, 107, 53, 0.25);
+    padding: 14px 24px;
+    text-align: left;
+    font-size: 13px;
+    color: #aaa;
+}
+
+.receipt-footer .receipt-timestamp {
+    color: #ff8c42;
+    font-weight: 600;
+}
+
+/* Desktop optimization - aim for no scroll */
+@media (min-width: 769px) {
+    .receipt-container {
+        max-width: 640px;
+        max-height: 95vh;
+    }
+    
+    .receipt-body {
+        padding: 18px 28px 12px;
+    }
+}
+
+/* Slide up animation */
+@keyframes slideUp {
+    from { transform: translateY(60px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
