@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elyson Protocol ($EYSN) - Staking Utility Token</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="receipt.css"> 
+    <link rel="stylesheet" href="notifications.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-brand">
+                <h1>Elyson Protocol ($EYSN)</h1>
+                <p class="tagline">Built on Utility, Secured by Immutability</p>
+            </div>
+            <button id="connectWallet" class="btn-connect btn-red-anim">Connect Wallet</button>
+            <div id="walletInfo" class="wallet-info hidden">
+                <span id="walletAddress"></span>
+                <button id="disconnectWallet" class="btn-disconnect">Disconnect</button>
+            </div>
+        </nav>
+    </header>
+
+    <div id="networkWarning" class="network-warning hidden">
+        ⚠️ Please switch to Base Sepolia Testnet
+    </div>
+
+    <div class="tabs-container">
+        <button class="tab tab-red active" data-tab="home">Home</button>
+        <button class="tab tab-red" data-tab="contribution">Contribution 🔥</button>
+        <button class="tab tab-red" data-tab="staking">Staking 💰</button>
+        <button class="tab tab-red" data-tab="rewards">Staking Rewards 🎁</button>
+        <button class="tab tab-red" data-tab="vesting">Vesting 📊</button>
+        <button class="tab tab-red" data-tab="tokenomics">Tokenomics 📈</button>
+        <button class="tab tab-red" data-tab="airdrop">Airdrop Campaign 🎉</button>
+    </div>
+
+    <main class="container">
+        
+        <!-- HOME TAB -->
+        <section id="home" class="tab-content active">
+            <div class="hero">
+                <h2>Elyson Protocol ($EYSN)</h2>
+                <p class="hero-subtitle">Staking Utility Token on Linea zkEVM</p>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3 id="totalSupply">4,000,000</h3>
+                        <p>Total Supply</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="circulatingSupply">Loading...</h3>
+                        <p>Circulating Supply</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="totalStaked">Loading...</h3>
+                        <p>Total Staked</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="holders">Loading...</h3>
+                        <p>Holders</p>
+                    </div>
+                </div>
+                <div class="contract-links">
+                    <h3>Contract Addresses (Verified ✅)</h3>
+                    <div class="contract-list">
+                        <div class="contract-item"><span>Token Contract:</span><a href="#" target="_blank" id="tokenLink" class="contract-address">Loading...</a></div>
+                        <div class="contract-item"><span>Staking Contract:</span><a href="#" target="_blank" id="stakingLink" class="contract-address">Loading...</a></div>
+                        <div class="contract-item"><span>Contribution Contract:</span><a href="#" target="_blank" id="contributionLink" class="contract-address">Loading...</a></div>
+                        <div class="contract-item"><span>Team Vesting:</span><a href="#" target="_blank" id="teamVestingLink" class="contract-address">Loading...</a></div>
+                        <div class="contract-item"><span>Marketing Vesting:</span><a href="#" target="_blank" id="marketingVestingLink" class="contract-address">Loading...</a></div>
+                        <div class="contract-item"><span>Airdrop Claim:</span><a href="#" target="_blank" id="airdropLink" class="contract-address">Loading...</a></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTRIBUTION TAB -->
+        <section id="contribution" class="tab-content">
+            <div class="panel">
+                <h2>Contribution Phase</h2>
+
+                <div class="sale-progress-box">
+                    <div class="sale-progress-header">
+                        <span>Sale Progress</span>
+                        <span id="tokensSoldDisplay">Loading...</span>
+                    </div>
+                    <div class="progress-bar" style="margin: 0.6rem 0;">
+                        <div class="progress" id="saleProgressBar" style="width: 0%"></div>
+                    </div>
+                    <div class="sale-progress-footer">
+                        <span>Sold: <strong id="tokensSold">—</strong></span>
+                        <span>Remaining: <strong id="tokensRemaining">—</strong></span>
+                        <span>Total: <strong>1,200,000 EYSN</strong></span>
+                    </div>
+                </div>
+
+                <div class="info-box" id="contributionStatus"><p>Loading contribution info...</p></div>
+
+                <div class="verification-box" style="margin-top:1rem;">
+                    <h3>Step 1 — Verify Identity</h3>
+                    <p style="font-size:0.85rem; opacity:0.8; margin-bottom:0.75rem;">
+                        Your wallet must hold one of: <strong>Binance BABT</strong>, <strong>Gitcoin Passport ≥ 20</strong>, or <strong>Galxe Soulbound NFT</strong>. Checked on-chain — no gas required.
+                    </p>
+                    <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+                        <button id="verifyContribBtn" class="btn-secondary btn-green-anim">Verify Identity 🔍</button>
+                        <span id="verifyStatusBadge" class="status-badge warning">⏳ Not Checked</span>
+                    </div>
+                </div>
+
+                <div class="contribution-form" style="margin-top:1.5rem;">
+                    <h3>Step 2 — Contribute ETH</h3>
+                    <div class="info-box" style="margin-bottom:1rem; font-size:0.84rem;">
+                        Rate: <strong>1 ETH = 4,444 EYSN</strong> &nbsp;·&nbsp; Min: <strong>0.01 ETH</strong> &nbsp;·&nbsp; Max/tx: <strong>~2.25 ETH</strong> &nbsp;·&nbsp; Wallet cap: <strong>160,000 EYSN</strong>
+                    </div>
+                    <div class="input-group">
+                        <label>ETH Amount</label>
+                        <input type="number" id="ethAmount" placeholder="0.01" min="0.01" step="0.001">
+                    </div>
+                    <div class="token-split">
+                        <div class="split-item">
+                            <p>70% Instant</p>
+                            <h3 id="instantTokens">0 EYSN</h3>
+                        </div>
+                        <div class="split-item">
+                            <p>30% Auto-Staked</p>
+                            <h3 id="stakedTokens">0 EYSN</h3>
+                        </div>
+                    </div>
+                    <button id="contributeBtn" class="btn-primary btn-green-anim" disabled>Contribute ETH</button>
+                    <p style="font-size:0.78rem; opacity:0.6; margin-top:0.4rem; text-align:center;">Verify identity above to enable this button</p>
+                </div>
+
+                <div class="user-contribution" style="margin-top:1.5rem;">
+                    <h3>Your Contribution</h3>
+                    <p>Tokens Received: <span id="userContribution">0 EYSN</span></p>
+                    <p>ETH Contributed: <span id="userEthContributed">0 ETH</span></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- STAKING TAB -->
+        <section id="staking" class="tab-content">
+            <div class="panel">
+                <h2>Stake $EYSN Tokens</h2>
+                <div class="staking-info">
+                    <div class="info-card"><h4>Current Phase</h4><p id="currentQuarter">Loading...</p></div>
+                    <div class="info-card"><h4>Daily Emission</h4><p id="quarterReward">Loading...</p></div>
+                    <div class="info-card"><h4>Total Staked</h4><p id="totalStakedAmount">Loading...</p></div>
+                </div>
+                <div class="staking-form">
+                    <div class="input-group">
+                        <label>Amount to Stake</label>
+                        <input type="number" id="stakeAmount" placeholder="100" min="100">
+                        <small>Min: 100 EYSN &nbsp;·&nbsp; Pool cap: 900,000 EYSN &nbsp;·&nbsp; Up to 20 top-ups</small>
+                        <button class="btn-max btn-green-anim" id="maxStakeBtn">MAX</button>
+                    </div>
+                    <div class="stake-steps">
+                        <div class="stake-step">
+                            <span class="step-num">1</span>
+                            <button id="approveStakeBtn" class="btn-step btn-green-anim">Approve EYSN</button>
+                        </div>
+                        <div class="stake-step-arrow">→</div>
+                        <div class="stake-step">
+                            <span class="step-num">2</span>
+                            <button id="stakeBtn" class="btn-step btn-step-primary btn-green-anim" disabled>Stake Tokens</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="user-stake-info">
+                    <h3>Your Stake</h3>
+                    <div class="stake-info-grid">
+                        <div class="stake-info-item"><span class="stake-info-label">Staked</span><span class="stake-info-value" id="userStaked">0 EYSN</span></div>
+                        <div class="stake-info-item"><span class="stake-info-label">Phase</span><span class="stake-info-value" id="userStartQuarter">-</span></div>
+                        <div class="stake-info-item"><span class="stake-info-label">Deposits</span><span class="stake-info-value" id="depositCount">0</span></div>
+                        <div class="stake-info-item"><span class="stake-info-label">Next Claim</span><span class="stake-info-value" id="claimCountdown">-</span></div>
+                    </div>
+                </div>
+                <div class="window-info-box">
+                    <div class="window-info-icon">🗓️</div>
+                    <div>
+                        <strong>Penalty-Free Unstake Window</strong>
+                        <p id="canUnstake" style="margin:2px 0; font-size:0.9rem;">-</p>
+                        <p class="window-countdown" id="windowCountdown">-</p>
+                    </div>
+                </div>
+                <div class="unstake-section">
+                    <div class="warning-box">⚠️ Early unstake outside the 7-day window = <strong>30% burn</strong>. No penalty inside window or after Phase 5.</div>
+                    <button id="unstakeBtn" class="btn-unstake">⬆️ Unstake All</button>
+                </div>
+                <div class="auto-return-section" style="margin-top:1rem;">
+                    <button id="autoReturnBtn" class="btn-secondary btn-green-anim" style="display:none;">🔄 Trigger Auto-Return (Phase 5 Complete)</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- STAKING REWARDS TAB -->
+        <section id="rewards" class="tab-content">
+            <div class="panel">
+                <h2>Claim Staking Rewards</h2>
+                <div class="rewards-display">
+                    <h3>Total Accrued Rewards</h3>
+                    <div class="reward-amount">
+                        <h1 id="pendingRewards">0</h1>
+                        <p>EYSN</p>
+                    </div>
+                    <p>Today's accrual: <strong><span id="todayAccrued">0 EYSN</span></strong></p>
+                    <p>Projected this month: <strong><span id="projectedMonthly">0 EYSN</span></strong></p>
+                    <p><span id="claimableNow">-</span></p>
+                    <button id="claimRewardsBtn" class="btn-primary btn-green-anim" disabled>Claim Rewards</button>
+                </div>
+                <div class="quarterly-breakdown">
+                    <h3>Phase Reward Breakdown</h3>
+                    <table class="rewards-table">
+                        <thead><tr><th>Phase</th><th>Pool</th><th>Your Accrued</th></tr></thead>
+                        <tbody>
+                            <tr><td>Phase 1</td><td>335,195 EYSN</td><td><span id="phase1Reward">-</span></td></tr>
+                            <tr><td>Phase 2</td><td>268,156 EYSN</td><td><span id="phase2Reward">-</span></td></tr>
+                            <tr><td>Phase 3</td><td>201,117 EYSN</td><td><span id="phase3Reward">-</span></td></tr>
+                            <tr><td>Phase 4</td><td>145,408 EYSN</td><td><span id="phase4Reward">-</span></td></tr>
+                            <tr><td>Phase 5</td><td>50,124 EYSN</td><td><span id="phase5Reward">-</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="loyalty-bonus-panel">
+                    <div class="loyalty-header">
+                        <span class="loyalty-icon">🏆</span>
+                        <div>
+                            <h3>Loyalty Bonus</h3>
+                            <p class="loyalty-desc">Stake ≥ 1,000 EYSN for 250 days → earn 500 EYSN · First 400 wallets FCFS</p>
+                        </div>
+                    </div>
+                    <div class="stake-info-grid" style="margin-top:1rem;">
+                        <div class="stake-info-item"><span class="stake-info-label">Your Days</span><span class="stake-info-value"><span id="loyaltyDays">0</span> / 250</span></div>
+                        <div class="stake-info-item"><span class="stake-info-label">Remaining</span><span class="stake-info-value" id="loyaltyDaysRemaining">250 days</span></div>
+                        <div class="stake-info-item"><span class="stake-info-label">Your Rank</span><span class="stake-info-value" id="loyaltyRank">-</span></div>
+                        <div class="stake-info-item"><span class="stake-info-label">Slots Left</span><span class="stake-info-value" id="loyaltySlotsLeft">400</span></div>
+                    </div>
+                    <p style="font-size:0.82rem; margin:0.5rem 0 1rem; color:var(--text-secondary);">
+                        FCFS Winners: <span id="loyaltyWinnersCount">0 / 400</span> &nbsp;·&nbsp; Status: <span id="loyaltyStatus">-</span>
+                    </p>
+                    <div class="loyalty-actions">
+                        <button id="checkLoyaltyBtn" class="btn-refresh btn-green-anim">🔄 Refresh</button>
+                        <button id="claimLoyaltyBtn" class="btn-primary btn-green-anim" disabled>Claim 500 EYSN Bonus</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VESTING TAB -->
+        <section id="vesting" class="tab-content">
+            <div class="panel">
+                <h2>Team &amp; Marketing Vesting</h2>
+                <div class="vesting-grid">
+                    <div class="vesting-card">
+                        <h3>Team Vesting (12%)</h3>
+                        <div class="vesting-stats">
+                            <p>Total Allocation: <strong>480,000 EYSN</strong></p>
+                            <p>Linear Vest Pool: <span id="teamVested">0 EYSN</span></p>
+                            <p>Claimed: <span id="teamClaimed">0 EYSN</span></p>
+                            <p>Claimable Now: <span id="teamClaimable">0 EYSN</span></p>
+                        </div>
+                        <button id="claimTeamBtn" class="btn-primary btn-green-anim">Claim Team Vesting</button>
+                        <small>Only team wallet can claim · Unlocks every 30 days</small>
+                    </div>
+                    <div class="vesting-card">
+                        <h3>Marketing Vesting (6%)</h3>
+                        <div class="vesting-stats">
+                            <p>Total Allocation: <strong>240,000 EYSN</strong></p>
+                            <p>Linear Vest Pool: <span id="marketingVested">0 EYSN</span></p>
+                            <p>Claimed: <span id="marketingClaimed">0 EYSN</span></p>
+                            <p>Claimable Now: <span id="marketingClaimable">0 EYSN</span></p>
+                        </div>
+                        <button id="claimMarketingBtn" class="btn-primary btn-green-anim">Claim Marketing Vesting</button>
+                        <small>Only marketing wallet can claim · Unlocks every 30 days</small>
+                    </div>
+                </div>
+                <div class="vesting-info">
+                    <h3>Vesting Schedule</h3>
+                    <ul>
+                        <li>✅ 10% released at TGE → 48,000 / 24,000 EYSN</li>
+                        <li>🔒 40% auto-staked on initialization → earns staking rewards</li>
+                        <li>⏳ 50% vested linearly over 30 months → claimable every 30 days</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- TOKENOMICS TAB -->
+        <section id="tokenomics" class="tab-content">
+            <div class="panel">
+                <h2>Tokenomics 📊</h2>
+                <p class="subtitle">Total Supply: 4,000,000 EYSN · Fixed Supply, No Minting</p>
+
+                <div class="tokenomics-table-wrap">
+                    <table class="tokenomics-table">
+                        <thead>
+                            <tr><th>Allocation</th><th>Tokens</th><th>%</th><th>Details</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="tok-dot" style="background:#ff6b35"></span>Staking Rewards</td>
+                                <td>1,000,000</td><td>25%</td>
+                                <td>5 phases × 180 days · Decreasing emission</td>
+                            </tr>
+                            <tr>
+                                <td><span class="tok-dot" style="background:#e05a00"></span>Loyalty Bonus</td>
+                                <td>200,000</td><td>5%</td>
+                                <td>500 EYSN × 400 wallets · FCFS · 250-day hold</td>
+                            </tr>
+                            <tr>
+                                <td><span class="tok-dot" style="background:#f7931a"></span>Contribution</td>
+                                <td>1,200,000</td><td>30%</td>
+                                <td>70% instant · 30% auto-staked · 1 ETH = 4,444 EYSN</td>
+                            </tr>
+                            <tr>
+                                <td><span class="tok-dot" style="background:#556fb5"></span>Team</td>
+                                <td>480,000</td><td>12%</td>
+                                <td>10% TGE · 40% staked · 50% over 30 months</td>
+                            </tr>
+                            <tr>
+                                <td><span class="tok-dot" style="background:#95e1d3"></span>Marketing</td>
+                                <td>240,000</td><td>6%</td>
+                                <td>20% TGE · 40% staked · 40% over 24 months</td>
+                            </tr>
+                            <tr>
+                                <td><span class="tok-dot" style="background:#ffd93d"></span>Airdrop</td>
+                                <td>160,000</td><td>4%</td>
+                                <td>Top 500 wallets · 320 EYSN each · Merkle proof</td>
+                            </tr>
+                            <tr>
+                                <td><span class="tok-dot" style="background:#4ecdc4"></span>Liquidity &amp; Reserve</td>
+                                <td>720,000</td><td>18%</td>
+                                <td>Locked 3–5 years · DEX liquidity &amp; reserve</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="tokenomics-rules" style="margin-top:2rem;">
+                    <h3>Protocol Rules</h3>
+                    <div class="transparency-grid">
+                        <div class="transparency-card">
+                            <h3>Anti-Whale</h3>
+                            <p class="allocation">4% Cap</p>
+                            <p>Max 160,000 EYSN per wallet</p>
+                        </div>
+                        <div class="transparency-card">
+                            <h3>Staking Pool</h3>
+                            <p class="allocation">900,000 EYSN</p>
+                            <p>Hard cap · Up to 20 top-ups per user</p>
+                        </div>
+                        <div class="transparency-card">
+                            <h3>Early Exit Penalty</h3>
+                            <p class="allocation">30% Burn</p>
+                            <p>Burned to 0xdead · 7-day penalty-free window</p>
+                        </div>
+                        <div class="transparency-card">
+                            <h3>Claim Interval</h3>
+                            <p class="allocation">Every 30 Days</p>
+                            <p>From first stake date · Per-user countdown</p>
+                        </div>
+                        <div class="transparency-card">
+                            <h3>Contracts</h3>
+                            <p class="allocation">Immutable ✅</p>
+                            <p>No upgrades possible · Ownership renounced</p>
+                        </div>
+                        <div class="transparency-card">
+                            <h3>Identity Gate</h3>
+                            <p class="allocation">SBT Required</p>
+                            <p>BABT / Galxe SBT / Gitcoin ≥ 20</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ownership-status" style="margin-top:2rem;">
+                    <h3>On-Chain Ownership</h3>
+                    <div class="status-grid">
+                        <div class="status-item"><p>Token Contract</p><span id="tokenOwnership" class="status-badge">Checking...</span></div>
+                        <div class="status-item"><p>Staking Contract</p><span id="stakingOwnership" class="status-badge">Checking...</span></div>
+                        <div class="status-item"><p>Contribution Contract</p><span id="contributionOwnership" class="status-badge">Checking...</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AIRDROP CAMPAIGN TAB -->
+        <section id="airdrop" class="tab-content">
+            <div class="panel">
+                <h2>Airdrop Campaign 🎉</h2>
+                <p class="subtitle">160,000 EYSN · Top 500 wallets · 320 EYSN each</p>
+
+                <div class="info-box" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+                    <div>
+                        <strong>Status:</strong>
+                        <span id="airdropStatusBadge" class="status-badge warning">⏳ Pending Deployment</span>
+                    </div>
+                    <div style="font-size:0.85rem; opacity:0.8;">
+                        Claimed: <strong id="airdropClaimed">— / 500</strong> &nbsp;|&nbsp; Deadline: <strong id="airdropDeadline">—</strong>
+                    </div>
+                </div>
+
+                <div class="bonus-system" style="margin-top:1.25rem;">
+                    <h3>How to Earn Points</h3>
+                    <div class="bonus-grid">
+                        <div class="bonus-card">
+                            <h4>Daily Tweet (+10 pts)</h4>
+                            <p>Post a tweet ≥ 30 words about Elyson Protocol. Submit URL on campaign dashboard.</p>
+                        </div>
+                        <div class="bonus-card">
+                            <h4>Daily Check-in (+5 pts)</h4>
+                            <p>Visit the campaign dashboard daily and check in with your connected wallet.</p>
+                        </div>
+                        <div class="bonus-card">
+                            <h4>SBT Verified (+bonus)</h4>
+                            <p>Hold BABT, Galxe SBT, or Gitcoin Passport ≥ 20. Required for claiming.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="staking-info" style="margin-top:1.25rem;">
+                    <div class="info-card"><h4>Total Pool</h4><p>160,000 EYSN</p></div>
+                    <div class="info-card"><h4>Per Wallet</h4><p>320 EYSN</p></div>
+                    <div class="info-card"><h4>Instant (30%)</h4><p>96 EYSN</p></div>
+                    <div class="info-card"><h4>Auto-Staked (70%)</h4><p>224 EYSN</p></div>
+                </div>
+
+                <div class="info-box warning" style="margin-top:1rem;">
+                    <strong>⚠️ Eligibility</strong>
+                    <ul style="margin:0.5rem 0 0 1rem; line-height:1.8;">
+                        <li>Hold a Soulbound Token (BABT / Galxe SBT / Gitcoin Passport)</li>
+                        <li>Ranked in top 500 by points at snapshot</li>
+                        <li>Twitter account ≥ 6 months old, ≥ 100 followers</li>
+                    </ul>
+                </div>
+
+                <div class="verification-box" style="margin-top:1rem;">
+                    <h3>Your Claim Status</h3>
+                    <p id="airdropUserStatus" style="margin:0.5rem 0;">Connect wallet to check status.</p>
+                    <p style="font-size:0.82rem; opacity:0.7;">Remaining spots: <span id="airdropRemaining">—</span></p>
+                </div>
+
+                <div class="airdrop-claim" style="margin-top:1rem;">
+                    <h3>Claim Your Airdrop</h3>
+                    <div class="input-group">
+                        <label>Merkle Proof (JSON array)</label>
+                        <textarea id="merkleProofInput" rows="3" placeholder='["0xabc123...", "0xdef456...", "0x789..."]' style="width:100%; font-family:monospace; font-size:0.8rem; padding:0.6rem; border-radius:6px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05); color:inherit; resize:vertical;"></textarea>
+                    </div>
+                    <button id="claimAirdropBtn" class="btn-primary btn-green-anim" disabled style="margin-top:0.75rem; width:100%;">
+                        Claim Airdrop (Submit Proof)
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Elyson Protocol</h4>
+                <p>Staking utility token on Linea zkEVM</p>
+            </div>
+            <div class="footer-section">
+                <h4>Links</h4>
+                <a href="#">Twitter</a><a href="#">Telegram</a><a href="#">Discord</a><a href="#">GitHub</a>
+            </div>
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <a href="#">Whitepaper</a><a href="#">Audit Report</a><a href="#">Documentation</a>
+            </div>
+        </div>
+        <p class="footer-disclaimer">
+            ⚠️ Disclaimer: Cryptocurrency investments are high-risk. DYOR. Elyson Protocol makes no guarantees of returns.
+        </p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <script src="config.js"></script>
+    <script src="utils.js"></script>
+    <script src="notifications.js"></script>
+    <script src="token.js"></script>
+    <script src="staking.js"></script>
+    <script src="contribution.js"></script>
+    <script src="vesting.js"></script>
+    <script src="receipt.js"></script>
+    <script src="airdrop.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
